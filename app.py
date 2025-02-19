@@ -1,6 +1,31 @@
 from flask import Flask, render_template, request, jsonify
+import os
+import google.generativeai as genai
 
 app = Flask(__name__)
+
+
+genai.configure(api_key=os.environ["GEMINI_API_KEY"])
+
+# Create the model
+generation_config = {
+  "temperature": 1,
+  "top_p": 0.95,
+  "top_k": 40,
+  "max_output_tokens": 8192,
+  "response_mime_type": "application/json",
+}
+
+model = genai.GenerativeModel(
+  model_name="gemini-2.0-flash",
+  generation_config=generation_config,
+  system_instruction="You are helping with the distribution of food to NGOs accordng to there need from the donated food which will be provided to u as an array have to allocate the food to NGOs by checking the nutrietions of the food available to you and rationing the required amount for the number of people",
+)
+
+chat_session = model.start_chat(
+  history=[
+  ]
+)
 
 # In-memory storage for user data and food items
 users = {}
