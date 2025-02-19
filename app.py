@@ -2,8 +2,9 @@ from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
 
-# In-memory storage for user data
+# In-memory storage for user data and food items
 users = {}
+food_items = []
 
 @app.route('/')
 def main():
@@ -42,16 +43,18 @@ def login():
 def add_food():
     if request.method == "POST":
         data = request.get_json()
-        # Add logic to handle adding food
+        food_name = data.get('foodName')
+        quantity = data.get('quantity')
+        perishable = data.get('perishable')
+        
+        food_items.append({'foodName': food_name, 'quantity': quantity, 'perishable': perishable})
         return jsonify({"message": "Food added successfully", "data": data}), 201
     else:
         return render_template('addFood.html')
 
 @app.route('/get_matches', methods=['GET'])
 def get_matches():
-    # Add logic to get matches
-    matches = []  # Replace with actual match data
-    return jsonify({"matches": matches}), 200
+    return jsonify({"matches": food_items}), 200
 
 if __name__ == '__main__':
     app.run(debug=True)

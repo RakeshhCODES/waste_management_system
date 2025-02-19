@@ -18,7 +18,7 @@
                 matchesList.innerHTML = '';
                 data.matches.forEach(match => {
                     const li = document.createElement('li');
-                    li.textContent = match;
+                    li.textContent = `Food: ${match.foodName}, Quantity: ${match.quantity}, Perishable: ${match.perishable ? 'Yes' : 'No'}`;
                     matchesList.appendChild(li);
                 });
             });
